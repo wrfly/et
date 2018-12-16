@@ -1,0 +1,20 @@
+package: github.com/wrfly/et
+import:
+- package: github.com/boltdb/bolt
+  version: ^1.3.1
+- package: github.com/elazarl/go-bindata-assetfs
+  version: ^1.0.0
+- package: github.com/gin-gonic/gin
+  version: ^1.3.0
+- package: github.com/sendgrid/sendgrid-go
+  version: ^3.4.1
+  subpackages:
+  - helpers/mail
+- package: github.com/sirupsen/logrus
+  version: ^1.2.0
+- package: github.com/wrfly/ecp
+  version: master
+- package: gopkg.in/urfave/cli.v2
+  version: ^2
+- package: gopkg.in/yaml.v2
+  version: ^2.2.2
