@@ -24,7 +24,7 @@ type Config struct {
 	Storage struct {
 		Type string `default:"bolt"` // bolt/redis/mongo/...
 		Bolt struct {
-			Path string `default:"/tmp"`
+			Path string `default:"/data"`
 		}
 		Redis struct {
 			Conn string

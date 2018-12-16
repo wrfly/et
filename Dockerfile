@@ -8,6 +8,7 @@ RUN cd ${PKG} && \
     mv ${PKG}/bin/et /
 
 FROM alpine
+RUN apk add --update ca-certificates
 COPY --from=0 /et /usr/local/bin/
 VOLUME [ "/data" ]
-CMD [ "et", "-d"]
+CMD [ "et"]

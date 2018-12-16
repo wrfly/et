@@ -9,8 +9,8 @@ go:
  - "1.10"
 
 script:
-  - make prepare
-  - make build
+  # - make prepare
+  # - make build
   - make image
 
 after_success:
