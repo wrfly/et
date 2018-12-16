@@ -1,0 +1,20 @@
+sudo: required
+
+services:
+  - docker
+
+language: go
+
+go:
+ - "1.10"
+
+script:
+  - make prepare
+  - make build
+  - make image
+
+after_success:
+  - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+  - if [[ "$TRAVIS_BRANCH" == "master" ]];then make push-image; fi
+  - if [[ "$TRAVIS_BRANCH" == "develop" ]];then make push-develop; fi
+  - if [[ "$TRAVIS_TAG" != "" ]];then make push-tag; fi

@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  email-tracker:
+    image: wrfly/et:latest
+    restart: unless-stopped
+    ports:
+      - 8080:2020
+    environment:
+      - ET_DEBUG=true
+    volumes:
+      - /tmp/et-data:/data

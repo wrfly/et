@@ -1,0 +1,16 @@
+# sendgrid API token
+sendgrid.env
+
+# Binaries for programs and plugins
+*.exe
+*.dll
+*.so
+*.dylib
+bin/
+
+# Test binary, build with `go test -c`
+*.test
+
+# glide & vendor
+.glide/
+vendor/
