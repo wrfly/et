@@ -14,7 +14,7 @@ import (
 
 func init() {
 	ecp.GetKey = func(parentName, structName string, tag reflect.StructTag) string {
-		return parentName + "." + structName
+		return parentName + "_" + structName
 	}
 }
 
@@ -24,7 +24,7 @@ type Config struct {
 	Storage struct {
 		Type string `default:"bolt"` // bolt/redis/mongo/...
 		Bolt struct {
-			Path string `default:"bolt"`
+			Path string `default:"/tmp"`
 		}
 		Redis struct {
 			Conn string
@@ -33,6 +33,7 @@ type Config struct {
 			Conn string
 		}
 	}
+	SendGridAPI string
 }
 
 func (c *Config) Example() {

@@ -1,5 +1,11 @@
 package notify
 
+import (
+	"fmt"
+
+	"github.com/wrfly/et/types"
+)
+
 type Notifier interface {
 	Send(to, content string) (string, int, error)
 }
@@ -8,6 +14,20 @@ const (
 	subject = "[Email Tracker] knock knock, someone opens your email!"
 
 	testReceiver = "null@kfd.me"
+
+	NotifyTemplate = `Hey,
+  Your email was opened!
+
+  Comments: %s
+  ---
+    IP: %s
+    UA: %s
+    Date: %s
+  ---
+
+Best Regards,
+https://track.kfd.me
+`
 )
 
 var (
@@ -30,4 +50,13 @@ func TestNotifier(n Notifier) (string, error) {
 	}
 
 	return body, nil
+}
+
+func NewContent(n types.Notification, comments string) string {
+	return fmt.Sprintf(NotifyTemplate,
+		comments,
+		n.Event.IP,
+		n.Event.UA,
+		n.Event.Time,
+	)
 }

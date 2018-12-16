@@ -1,5 +1,5 @@
-# sendgrid API token
-sendgrid.env
+# API token and configs
+config.env
 
 # Binaries for programs and plugins
 *.exe

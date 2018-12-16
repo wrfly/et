@@ -1,17 +1,26 @@
 package server
 
 import (
+	"fmt"
+
 	"github.com/gin-gonic/gin"
-	"github.com/wrfly/et/notify"
+	"github.com/wrfly/et/server/api"
 )
 
-type Server struct {
-	e *gin.Engine
-	n notify.Notifier
-	// storage
+func Run(listen int, handler *api.Handler) error {
+	e := gin.Default()
 
-}
+	// index
+	// e.GET("/",asset.)
 
-func New(listen int) (*Server, error) {
-	return nil, nil
+	// api
+	apiG := e.Group("/api")
+	{
+		apiG.POST("/task/submit", handler.Submit)
+	}
+
+	// track
+	e.GET("/t/:taskID", handler.Open)
+
+	return e.Run(fmt.Sprintf(":%d", listen))
 }

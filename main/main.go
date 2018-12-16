@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/sirupsen/logrus"
 	"github.com/wrfly/ecp"
@@ -63,7 +64,7 @@ func main() {
 				return nil
 			}
 			if c.Bool("env-list") {
-				for _, e := range ecp.List(conf, appName) {
+				for _, e := range ecp.List(conf, strings.ToUpper(appName)) {
 					fmt.Println(e)
 				}
 				return nil
@@ -77,11 +78,15 @@ func main() {
 			}
 
 			// set default value
-			if err := ecp.Parse(conf, appName); err != nil {
+			if err := ecp.Parse(conf, strings.ToUpper(appName)); err != nil {
 				logrus.Fatalf("ecp parse error: %s", err)
 			}
 
-			return run(conf)
+			if err := run(conf); err != nil {
+				logrus.Fatal(err)
+			}
+
+			return nil
 		},
 	}
 
