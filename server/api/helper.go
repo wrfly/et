@@ -4,32 +4,40 @@ import (
 	"crypto/md5"
 	"fmt"
 	"time"
+
+	"github.com/wrfly/et/types"
 )
 
-func genTaskID(mailTo string, comments string) string {
+func printSum(bytes []byte) string {
 	hasher := md5.New()
-	hasher.Write([]byte(
-		fmt.Sprint(mailTo, comments, time.Now().UnixNano()),
-	))
+	hasher.Write(bytes)
 
-	taskID := ""
+	ID := ""
 	sum := fmt.Sprintf("%x", hasher.Sum(nil))
 
 	for i := 0; i < len(sum); i += 5 {
 		end := i + 5
-		if taskID == "" {
-			taskID = fmt.Sprintf("%s", sum[i:end])
+		if ID == "" {
+			ID = fmt.Sprintf("%s", sum[i:end])
 		} else {
 			if end > len(sum) {
 				end = len(sum)
 			}
-			taskID = fmt.Sprintf("%s-%s", taskID, sum[i:end])
+			ID = fmt.Sprintf("%s-%s", ID, sum[i:end])
 		}
 	}
 
-	return taskID
+	return ID
 }
 
-func genNotificationID(salt string) string {
-	return genTaskID("", salt)
+func genTaskID(t types.Task) string {
+	return printSum([]byte(
+		fmt.Sprint(t.NotifyTo, t.Comments, time.Now().UnixNano()),
+	))
+}
+
+func genNotificationID(n types.Notification) string {
+	return printSum([]byte(
+		fmt.Sprint(n.TaskID, n.Event.IP, time.Now().UnixNano()),
+	))
 }

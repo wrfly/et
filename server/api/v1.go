@@ -14,7 +14,15 @@ import (
 	"github.com/wrfly/et/types"
 )
 
-var pngFile, _ = asset.Asset("png/pixel.png")
+const (
+	fileName = "png/pixel.png"
+	timeZone = "Asia/Shanghai"
+)
+
+var (
+	pngFile, _ = asset.Asset(fileName)
+	local, _   = time.LoadLocation(timeZone)
+)
 
 type Handler struct {
 	n notify.Notifier
@@ -47,53 +55,85 @@ func (h *Handler) Open(c *gin.Context) {
 	go func() {
 		task, err := h.s.FindTask(taskID)
 		if err != nil {
-			logrus.Errorf("task [%s] not found", taskID)
+			logrus.Warnf("find task [%s] error: %s", taskID, err)
+			return
+		}
+		if task.Opentimes > TaskLimit {
+			logrus.Warnf("task [%s] open too many times", taskID)
 			return
 		}
 
 		n := types.Notification{
-			ID:     genNotificationID(fmt.Sprintf("%s-%s-%s", taskID, ip, ua)),
 			TaskID: taskID,
 			Event: types.OpenEvent{
 				IP:   ip,
 				UA:   ua,
-				Time: time.Now(),
+				Time: time.Now().Add(task.Adjust),
 			},
 		}
+		n.ID = genNotificationID(n)
 
 		// save notification
 		if err := h.s.SaveNotification(n); err != nil {
 			logrus.Errorf("save notification error: %s", err)
 		}
 
-		logrus.Debugf("send notification %+v", n)
+		logrus.Debugf("send notification to %s", task.NotifyTo)
 		body, code, err := h.n.Send(task.NotifyTo, notify.NewContent(n, task.Comments))
 		if err != nil {
 			logrus.Errorf("send notification err: %s", err)
 		}
-		if code != http.StatusCreated {
+
+		// sendgrid service returns 202
+		if code != http.StatusAccepted {
 			logrus.Errorf("handle task [%+v], body: %s, code: %d",
 				task, body, code)
 		}
+
+		logrus.Debugf("send notification %+v done", n)
 	}()
 }
 
 func (h *Handler) Submit(c *gin.Context) {
+	r := taskRequest{}
+	if err := c.BindJSON(&r); err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, taskResponse{
+			Error: err.Error(),
+		})
+		return
+	}
+	if r.LocalTime.IsZero() {
+		r.LocalTime = time.Now().In(local)
+	}
 
-	mailTo := c.Query("to")
-	comments := c.Query("c")
-
-	ID := genTaskID(mailTo, comments)
 	t := types.Task{
-		ID:       ID,
-		NotifyTo: mailTo,
-		Comments: comments,
+		NotifyTo: r.NotifyTo,
+		Comments: r.Comments,
+		SubmitAt: r.LocalTime,
+		Adjust: r.LocalTime.Sub(time.Now()).
+			Truncate(time.Second),
 	}
-	logrus.Debugf("submit task %+v", t)
+
+	if !validTask(t) {
+		c.AbortWithStatusJSON(http.StatusBadRequest, taskResponse{
+			Error: "bad request, check your email address and comments",
+		})
+		return
+	}
+
+	t.ID = genTaskID(t)
+	logrus.Debugf("submit task [%s], notify to [%s] with comments [%s]",
+		t.ID, t.NotifyTo, t.Comments)
+	logrus.Debugf("submitAt: %s, adjust: %s", t.SubmitAt, t.Adjust)
 	if err := h.s.SaveTask(t); err != nil {
-		logrus.Errorf("save task error: %s", err)
+		c.AbortWithStatusJSON(http.StatusBadRequest, taskResponse{
+			Error: fmt.Sprintf("save task error: %s", err),
+		})
+		return
 	}
-	c.String(http.StatusOK,
-		fmt.Sprintf("ID: %s\nhttps://track.kfd.me/t/%s\n",
-			ID, ID))
+
+	c.JSON(http.StatusOK, taskResponse{
+		TaskID:    t.ID,
+		TrackLink: fmt.Sprintf("%s/t/%s", DomainPrefix, t.ID),
+	})
 }

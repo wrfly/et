@@ -57,6 +57,6 @@ func NewContent(n types.Notification, comments string) string {
 		comments,
 		n.Event.IP,
 		n.Event.UA,
-		n.Event.Time,
+		n.Event.Time.Format("2006-01-02 15:04:05"),
 	)
 }

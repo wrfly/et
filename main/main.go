@@ -78,6 +78,9 @@ func main() {
 			}
 
 			// set default value
+			if err := ecp.Default(conf); err != nil {
+				logrus.Fatalf("ecp set default value error: %s", err)
+			}
 			if err := ecp.Parse(conf, strings.ToUpper(appName)); err != nil {
 				logrus.Fatalf("ecp parse error: %s", err)
 			}

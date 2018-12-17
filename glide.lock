@@ -1,5 +1,5 @@
 hash: c40b0e760adfb6c27b2b3d5a19a3922117f6d6bc89712d6aa75678f99462c70c
-updated: 2018-12-17T01:48:23.218135965+08:00
+updated: 2018-12-18T00:28:35.268689129+08:00
 imports:
 - name: github.com/boltdb/bolt
   version: 2f1ce7a837dcb8da3ec595b1dac9d0632f0f99e8
@@ -36,7 +36,7 @@ imports:
   subpackages:
   - codec
 - name: github.com/wrfly/ecp
-  version: 94b8fb4ff8132088aaa905cf1382890444db0aac
+  version: 8b174fc3c2e582868d9512c448373d726f87596e
 - name: golang.org/x/crypto
   version: 2b6c08872f4b66da917bb4ce98df4f0307330f78
   subpackages:

@@ -12,6 +12,9 @@ type Task struct {
 	// comments, such as email subject, receiver, or some marks
 	Comments string
 	NotifyTo string
+	// this field get from request, used to adjust notification time
+	SubmitAt time.Time
+	Adjust   time.Duration
 	// opentime could change
 	Opentimes int
 }

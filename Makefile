@@ -42,7 +42,8 @@ test:
 
 .PHONY: dev
 dev: bin asset build
-	echo dev
+	@echo source config.env
+	$(BIN)
 
 .PHONY: image
 image:
