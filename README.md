@@ -6,7 +6,7 @@ Notify you when someone opens the email.
 
 <!--
     I wrote this project just want to know whether someone had
-    opened my email, waiting too long... And I like her.
+    opened my email, waiting too long... She's getting married...
     :(
 -->
 
@@ -20,18 +20,20 @@ Notify you when someone opens the email.
 
 ---
 
-![Tasks Submitted](https://track.kfd.me/api/status/tasks/total?svg)
+## Status
+
+![Task Submitted](https://track.kfd.me/api/status/task/total?svg)
 ![Total Notified](https://track.kfd.me/api/status/notified/total?svg)
 ![Daily Notified](https://track.kfd.me/api/status/notified/daily?svg)
 
 ## Design
 
-1. Users provide their **notify-email address**.
+1. Users provide their **email address** to receive notifications.
 2. Server generate an uniq `track ID` and returns to user,
     in the format of a 1x1 pixel png link.
 3. User insert the png link into the email waiting to send.
 4. When someone opens the link (`/t/xxxx-xxxx-xxxx`), server will send
-    a notification email to the **notify-email address**, first 5 times.
+    a notification email to the **email address** provided.
 5. Since there is no way to identify the target's name, user can optionally
     set a target username or some comments to the `track task`.
 6. Allow user to extend the notify times since the user could click
@@ -41,9 +43,26 @@ Notify you when someone opens the email.
 
 ## API
 
-- `/` Index page, can provide a beautiful *task submit* portal.
-    But can also handle request from `curl` (reuse the API handler).
-- `/t/****` Track task handler, always returns a 1x1 pixel png file.
+- GET `/` Index page, provide a beautiful *task submit* portal.
+- GET `/t/****` Track task handler, always returns a 1x1 pixel png file.
     Server will do something according to the track ID.
 - `/api/` Raw API entrypoint, user can check task status, submit tasks
     and so on.
+- `/api/task/`
+  - POST `../submit` submit a new track task
+  - POST `../resume?id=****` resume the stopped task
+  - GET `../get?id=****` get task status, all notifications sent
+- `/api/status`
+  - GET `../task/total` *total* task handled
+  - GET `../task/total?svg` return a status badge
+  - GET `../notified/total?svg` return a status badge of *total* email sent
+  - GET `../notified/daily?svg` return a status badge of *daily* email sent
+
+## Constraints
+
+- Same IP address can submit **10** tasks daily(per 24 hours).
+    Can do this in memory, not a big deal.
+- After sent **5** emails, automatically stop this task,
+    user can resume the task once.
+- Validate notifier's email, same email address can
+    only receive **50** emails pre day.
