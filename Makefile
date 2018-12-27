@@ -64,12 +64,10 @@ push-dev-img:
 
 .PHONY: tools
 tools:
-	go get github.com/jteeuwen/go-bindata/...
-	go get github.com/elazarl/go-bindata-assetfs/...
+	go get github.com/wrfly/bindata
 
 ASSET_FILE := server/asset/asset.go
 .PHONY: asset
 asset:
-	go-bindata-assetfs -nometadata -prefix html -pkg asset html/...
-	mv bindata_assetfs.go $(ASSET_FILE)
-	gofmt -w $(ASSET_FILE)
+	bindata -pkg github.com/$(AUTHOR)/$(NAME)/server/asset \
+		-resource html/

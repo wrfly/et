@@ -15,14 +15,22 @@ import (
 )
 
 const (
-	fileName = "png/pixel.png"
 	timeZone = "Asia/Shanghai"
 )
 
 var (
-	pngFile, _ = asset.Asset(fileName)
-	local, _   = time.LoadLocation(timeZone)
+	pngFile  []byte
+	local, _ = time.LoadLocation(timeZone)
 )
+
+func init() {
+	_file, err := asset.Data.Asset("/png/pixel.png")
+	if err != nil {
+		panic(err)
+	}
+	pngFile = _file.Bytes()
+
+}
 
 type Handler struct {
 	n notify.Notifier
@@ -37,22 +45,18 @@ func New(n notify.Notifier, s storage.Database) *Handler {
 }
 
 func (h *Handler) Open(c *gin.Context) {
-	defer func() {
-		c.Header("content-type", "image/png")
-		c.Header("content-length", "126")
-		c.Writer.Write(pngFile)
-	}()
-
-	var (
-		taskID = c.Param("taskID")
-		ip     = c.ClientIP()
-		ua     = c.Request.UserAgent()
-	)
-	if len(taskID) > 40 {
-		return
-	}
+	c.Writer.Write(pngFile)
 
 	go func() {
+		var (
+			taskID = c.Param("taskID")
+			ip     = c.ClientIP()
+			ua     = c.Request.UserAgent()
+		)
+		if len(taskID) > 40 {
+			return
+		}
+
 		task, err := h.s.FindTask(taskID)
 		if err != nil {
 			logrus.Warnf("find task [%s] error: %s", taskID, err)
@@ -94,7 +98,7 @@ func (h *Handler) Open(c *gin.Context) {
 	}()
 }
 
-func (h *Handler) Submit(c *gin.Context) {
+func (h *Handler) SubmitTask(c *gin.Context) {
 	r := taskRequest{}
 	if err := c.BindJSON(&r); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, taskResponse{
