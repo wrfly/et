@@ -3,6 +3,7 @@ package api
 import (
 	"fmt"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -53,6 +54,8 @@ func (h *Handler) Open(c *gin.Context) {
 			ip     = c.ClientIP()
 			ua     = c.Request.UserAgent()
 		)
+		// trim suffix `.png` if found
+		taskID = strings.TrimSuffix(taskID, ".png")
 		if len(taskID) > 40 {
 			return
 		}
@@ -138,6 +141,6 @@ func (h *Handler) SubmitTask(c *gin.Context) {
 
 	c.JSON(http.StatusOK, taskResponse{
 		TaskID:    t.ID,
-		TrackLink: fmt.Sprintf("%s/t/%s", DomainPrefix, t.ID),
+		TrackLink: fmt.Sprintf("%s/t/%s.png", DomainPrefix, t.ID),
 	})
 }

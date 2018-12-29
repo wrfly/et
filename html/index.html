@@ -5,10 +5,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Email Tracker</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
-    <script src="main.js"></script>
+    <link rel="stylesheet" type="text/css" media="screen" href="/main.css" />
 </head>
 <body>
-    
+    <div>
+        <form onsubmit="return false;">
+            notifier: <input type="email" id="notifier"><br>
+            comments: <input type="text" id="comments"><br>
+            <input type="submit" value="Submit" id="submit">
+        </form>
+    </div>
+    <div hidden="true" id="hidden_box">
+        Your hidden track png link is <code id="link"></code>
+        <p><code id="paste"></code></p>
+    </div>
 </body>
+<script src="/main.js"></script>
 </html>
