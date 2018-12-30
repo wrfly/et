@@ -13,8 +13,8 @@ var (
 )
 
 type Database interface {
-	SaveTask(types.Task) error
-	FindTask(ID string) (types.Task, error)
+	SaveTask(*types.Task) error
+	FindTask(ID string) (*types.Task, error)
 	// SaveNotification not only save to db but also update the task
 	SaveNotification(types.Notification) error
 	// find all notifications of the specific task ID

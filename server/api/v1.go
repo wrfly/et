@@ -9,6 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 
+	"github.com/wrfly/et/limiter"
 	"github.com/wrfly/et/notify"
 	"github.com/wrfly/et/server/asset"
 	"github.com/wrfly/et/storage"
@@ -50,14 +51,13 @@ func (h *Handler) Open(c *gin.Context) {
 
 	go func() {
 		var (
-			taskID = c.Param("taskID")
+			// trim suffix `.png` if found
+			taskID = strings.TrimSuffix(c.Param("taskID"), ".png")
 			ip     = c.ClientIP()
 			ua     = c.Request.UserAgent()
 		)
-		// trim suffix `.png` if found
-		taskID = strings.TrimSuffix(taskID, ".png")
 		if len(taskID) > 40 {
-			return
+			return // basic check
 		}
 
 		task, err := h.s.FindTask(taskID)
@@ -65,39 +65,39 @@ func (h *Handler) Open(c *gin.Context) {
 			logrus.Warnf("find task [%s] error: %s", taskID, err)
 			return
 		}
-		if task.Opentimes > TaskLimit {
-			logrus.Warnf("task [%s] open too many times", taskID)
+		// check task state
+		if task.BadState() {
+			logrus.Warnf("task [%s] can not be processed due to bad state %s",
+				task.ID, task.State)
+			return
+		}
+		defer h.s.SaveTask(task) // save state
+		if !checkTaskLimit(task) {
 			return
 		}
 
-		n := types.Notification{
-			TaskID: taskID,
-			Event: types.OpenEvent{
-				IP:   ip,
-				UA:   ua,
-				Time: time.Now().Add(task.Adjust),
-			},
-		}
-		n.ID = genNotificationID(n)
+		// new notification
+		notification := newNotification(*task, ip, ua)
 
 		// save notification
-		if err := h.s.SaveNotification(n); err != nil {
+		if err := h.s.SaveNotification(notification); err != nil {
 			logrus.Errorf("save notification error: %s", err)
 		}
 
 		logrus.Debugf("send notification to %s", task.NotifyTo)
-		body, code, err := h.n.Send(task.NotifyTo, notify.NewContent(n, task.Comments))
+		body, code, err := h.n.Send(task.NotifyTo,
+			notify.NewContent(notification, task.Comments))
 		if err != nil {
 			logrus.Errorf("send notification err: %s", err)
 		}
 
-		// sendgrid service returns 202
+		// sendgrid API returns 202
 		if code != http.StatusAccepted {
 			logrus.Errorf("handle task [%+v], body: %s, code: %d",
 				task, body, code)
 		}
 
-		logrus.Debugf("send notification %+v done", n)
+		logrus.Debugf("send notification %+v done", notification)
 	}()
 }
 
@@ -113,12 +113,21 @@ func (h *Handler) SubmitTask(c *gin.Context) {
 		r.LocalTime = time.Now().In(local)
 	}
 
-	t := types.Task{
+	t := &types.Task{
 		NotifyTo: r.NotifyTo,
 		Comments: r.Comments,
 		SubmitAt: r.LocalTime,
 		Adjust: r.LocalTime.Sub(time.Now()).
 			Truncate(time.Second),
+	}
+
+	// check ip
+	if err := limiter.IP.Inc(c.ClientIP()); err != nil {
+		logrus.Warnf("ip [%s] limiter: %s", c.ClientIP(), err)
+		c.AbortWithStatusJSON(http.StatusBadRequest, taskResponse{
+			Error: err.Error(),
+		})
+		return
 	}
 
 	if !validTask(t) {
@@ -127,8 +136,7 @@ func (h *Handler) SubmitTask(c *gin.Context) {
 		})
 		return
 	}
-
-	t.ID = genTaskID(t)
+	genTaskID(t)
 	logrus.Debugf("submit task [%s], notify to [%s] with comments [%s]",
 		t.ID, t.NotifyTo, t.Comments)
 	logrus.Debugf("submitAt: %s, adjust: %s", t.SubmitAt, t.Adjust)

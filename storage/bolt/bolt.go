@@ -11,7 +11,7 @@ type boltStorage struct {
 }
 
 // SaveTask to boltDB
-func (b *boltStorage) SaveTask(t types.Task) error {
+func (b *boltStorage) SaveTask(t *types.Task) error {
 	return b.db.Update(func(tx *bolt.Tx) error {
 		b := getTBucket(tx)
 		return b.Put(t.Key(), t.Value())
@@ -19,8 +19,8 @@ func (b *boltStorage) SaveTask(t types.Task) error {
 }
 
 // FindTask in boltDB
-func (b *boltStorage) FindTask(ID string) (types.Task, error) {
-	t := types.Task{}
+func (b *boltStorage) FindTask(ID string) (*types.Task, error) {
+	t := &types.Task{}
 
 	return t, b.db.View(func(tx *bolt.Tx) error {
 		b := getTBucket(tx)
@@ -40,17 +40,6 @@ func (b *boltStorage) SaveNotification(n types.Notification) error {
 		if err := b.Put(n.Key(), n.Value()); err != nil {
 			return err
 		}
-
-		// update task
-		t := getTBucket(tx)
-		bs := t.Get([]byte(n.TaskID))
-		if bs == nil {
-			return storage.ErrTaskNotFound
-		}
-		task := types.Task{}
-		task.Unmarshal(bs)
-		task.Opentimes++ // increase open times
-		return t.Put(task.Key(), task.Value())
 
 		// TODO: use relation bucket
 		// r := getRBucket(tx)

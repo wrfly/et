@@ -1,5 +1,5 @@
 hash: c40b0e760adfb6c27b2b3d5a19a3922117f6d6bc89712d6aa75678f99462c70c
-updated: 2018-12-18T00:28:35.268689129+08:00
+updated: 2018-12-30T23:57:14.172988529+08:00
 imports:
 - name: github.com/boltdb/bolt
   version: 2f1ce7a837dcb8da3ec595b1dac9d0632f0f99e8
@@ -23,6 +23,8 @@ imports:
   version: 5c8c8bd35d3832f5d134ae1e1e375b69a4d25242
 - name: github.com/mattn/go-isatty
   version: 6ca4dbf54d38eea1a992b3c722a76a5d1c4cb25c
+- name: github.com/patrickmn/go-cache
+  version: 5633e0862627c011927fa39556acae8b1f1df58a
 - name: github.com/sendgrid/rest
   version: 8f995deebcbbba440a60746115fdb5524e7cf3fc
 - name: github.com/sendgrid/sendgrid-go

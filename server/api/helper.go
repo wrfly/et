@@ -30,8 +30,8 @@ func printSum(bytes []byte) string {
 	return ID
 }
 
-func genTaskID(t types.Task) string {
-	return printSum([]byte(
+func genTaskID(t *types.Task) {
+	t.ID = printSum([]byte(
 		fmt.Sprint(t.NotifyTo, t.Comments, time.Now().UnixNano()),
 	))
 }
@@ -40,4 +40,17 @@ func genNotificationID(n types.Notification) string {
 	return printSum([]byte(
 		fmt.Sprint(n.TaskID, n.Event.IP, time.Now().UnixNano()),
 	))
+}
+
+func newNotification(task types.Task, ip, ua string) types.Notification {
+	n := types.Notification{
+		TaskID: task.ID,
+		Event: types.OpenEvent{
+			IP:   ip,
+			UA:   ua,
+			Time: time.Now().Add(task.Adjust),
+		},
+	}
+	n.ID = genNotificationID(n)
+	return n
 }

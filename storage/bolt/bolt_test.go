@@ -15,7 +15,7 @@ func TestBoltStorage(t *testing.T) {
 	defer db.Close()
 
 	ID := "taskID" + time.Now().String()
-	task := types.Task{
+	task := &types.Task{
 		ID:       ID,
 		Comments: "test comments",
 	}
