@@ -1,11 +1,9 @@
 package api
 
-import "time"
-
 type taskRequest struct {
-	NotifyTo  string    `json:"notifier"`
-	Comments  string    `json:"comments"`
-	LocalTime time.Time `json:"time"`
+	NotifyTo string `json:"notifier"`
+	Comments string `json:"comments"`
+	Offset   int    `json:"offset"`
 }
 
 type taskResponse struct {

@@ -8,5 +8,6 @@ services:
       - 8080:2020
     environment:
       - ET_DEBUG=true
+      - ET_SendGridAPI=""
     volumes:
       - /tmp/et-data:/data

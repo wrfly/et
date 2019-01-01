@@ -58,8 +58,8 @@ push-tag:
 	docker push $(IMAGE)
 	docker push $(IMAGE):$(VERSION)
 
-.PHONY: push-dev-img
-push-dev-img:
+.PHONY: push-img-dev
+push-img-dev:
 	docker push $(IMAGE):dev
 
 .PHONY: tools

@@ -30,6 +30,16 @@ func (n *sgNotifier) Send(toMail, content string) (string, int, error) {
 		mail.NewContent("text/plain", content),
 	)
 
+	m.SetTrackingSettings(&mail.TrackingSettings{
+		ClickTracking: mail.NewClickTrackingSetting().
+			SetEnable(false).
+			SetEnableText(false),
+		OpenTracking: mail.NewOpenTrackingSetting().
+			SetEnable(false),
+		Footer: mail.NewFooterSetting().
+			SetEnable(false),
+	})
+
 	resp, err := n.cli.Send(m)
 	if err != nil {
 		return "", -1, err

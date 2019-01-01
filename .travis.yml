@@ -15,6 +15,6 @@ script:
 
 after_success:
   - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-  - if [[ "$TRAVIS_BRANCH" == "master" ]];then make push-image; fi
-  - if [[ "$TRAVIS_BRANCH" == "develop" ]];then make push-develop; fi
+  - if [[ "$TRAVIS_BRANCH" == "master" ]];then make push-img; fi
+  - if [[ "$TRAVIS_BRANCH" == "develop" ]];then make push-img-dev; fi
   - if [[ "$TRAVIS_TAG" != "" ]];then make push-tag; fi

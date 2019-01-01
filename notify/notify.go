@@ -11,19 +11,20 @@ type Notifier interface {
 }
 
 const (
-	subject = "[Email Tracker] knock knock, someone opens your email!"
+	subject = "[Email Tracker] knock knock, someone opened your email!"
 
 	testReceiver = "null@kfd.me"
 
 	NotifyTemplate = `Hey,
-  Your email was opened!
 
-  Comments: %s
-  ---
-    IP: %s
-    UA: %s
-    Date: %s
-  ---
+Your email was opened!
+
+Comments: %s
+---
+  IP: %s
+  UA: %s
+  Date: %s
+---
 
 Best Regards,
 https://track.kfd.me

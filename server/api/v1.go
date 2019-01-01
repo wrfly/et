@@ -31,7 +31,6 @@ func init() {
 		panic(err)
 	}
 	pngFile = _file.Bytes()
-
 }
 
 type Handler struct {
@@ -40,10 +39,7 @@ type Handler struct {
 }
 
 func New(n notify.Notifier, s storage.Database) *Handler {
-	return &Handler{
-		n: n,
-		s: s,
-	}
+	return &Handler{n: n, s: s}
 }
 
 func (h *Handler) Open(c *gin.Context) {
@@ -109,16 +105,11 @@ func (h *Handler) SubmitTask(c *gin.Context) {
 		})
 		return
 	}
-	if r.LocalTime.IsZero() {
-		r.LocalTime = time.Now().In(local)
-	}
-
 	t := &types.Task{
 		NotifyTo: r.NotifyTo,
 		Comments: r.Comments,
-		SubmitAt: r.LocalTime,
-		Adjust: r.LocalTime.Sub(time.Now()).
-			Truncate(time.Second),
+		SubmitAt: time.Now(), // UTC
+		Offset:   -time.Duration(r.Offset) * time.Minute,
 	}
 
 	// check ip
@@ -137,9 +128,7 @@ func (h *Handler) SubmitTask(c *gin.Context) {
 		return
 	}
 	genTaskID(t)
-	logrus.Debugf("submit task [%s], notify to [%s] with comments [%s]",
-		t.ID, t.NotifyTo, t.Comments)
-	logrus.Debugf("submitAt: %s, adjust: %s", t.SubmitAt, t.Adjust)
+	logrus.Debugf("submit task [%+v]", t)
 	if err := h.s.SaveTask(t); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, taskResponse{
 			Error: fmt.Sprintf("save task error: %s", err),

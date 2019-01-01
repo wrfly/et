@@ -15,7 +15,7 @@ type Task struct {
 
 	// this field get from request, used to adjust notification time
 	SubmitAt time.Time
-	Adjust   time.Duration
+	Offset   time.Duration
 
 	// task state
 	State State

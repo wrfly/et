@@ -6,10 +6,8 @@ import (
 	"reflect"
 
 	"github.com/sirupsen/logrus"
-
-	"gopkg.in/yaml.v2"
-
 	"github.com/wrfly/ecp"
+	"gopkg.in/yaml.v2"
 )
 
 func init() {
@@ -24,7 +22,7 @@ type Config struct {
 	Storage struct {
 		Type string `default:"bolt"` // bolt/redis/mongo/...
 		Bolt struct {
-			Path string `default:"/tmp"`
+			Path string `default:"/data"`
 		}
 		Redis struct {
 			Conn string

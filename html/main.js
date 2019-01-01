@@ -39,7 +39,7 @@ submit.onclick = function () {
     var data = JSON.stringify({
         "notifier": notifier.value,
         "comments": comments.value,
-        "time": d.toJSON()
+        "offset": d.getTimezoneOffset()
         });
     xhr.send(data);
 };
