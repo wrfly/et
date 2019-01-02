@@ -23,8 +23,8 @@ func Run(listen int, handler *api.Handler) error {
 		taskG := apiG.Group("/task")
 		{
 			taskG.POST("/submit", handler.SubmitTask)
-			taskG.POST("/resume")
-			taskG.GET("/get")
+			taskG.POST("/resume", handler.ResumeTask)
+			taskG.GET("/get", handler.GetTask)
 		}
 
 		statusG := apiG.Group("/status")

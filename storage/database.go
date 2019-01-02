@@ -18,6 +18,6 @@ type Database interface {
 	// SaveNotification not only save to db but also update the task
 	SaveNotification(types.Notification) error
 	// find all notifications of the specific task ID
-	FindNotification(ID string) ([]types.Notification, error)
+	FindNotification(taskID string) ([]types.Notification, error)
 	Close() error
 }

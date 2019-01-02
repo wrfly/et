@@ -5,5 +5,5 @@ package api
 var (
 	// track png domain prefix
 	DomainPrefix = "https://track.kfd.me"
-	TaskLimit    = 5 // a task can be only send 5 times
+	TaskLimit    = 5 // a task can send 5 notifications only (before resume)
 )

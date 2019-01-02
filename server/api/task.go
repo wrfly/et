@@ -8,39 +8,10 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
-
 	"github.com/wrfly/et/limiter"
 	"github.com/wrfly/et/notify"
-	"github.com/wrfly/et/server/asset"
-	"github.com/wrfly/et/storage"
 	"github.com/wrfly/et/types"
 )
-
-const (
-	timeZone = "Asia/Shanghai"
-)
-
-var (
-	pngFile  []byte
-	local, _ = time.LoadLocation(timeZone)
-)
-
-func init() {
-	_file, err := asset.Data.Asset("/png/pixel.png")
-	if err != nil {
-		panic(err)
-	}
-	pngFile = _file.Bytes()
-}
-
-type Handler struct {
-	n notify.Notifier
-	s storage.Database
-}
-
-func New(n notify.Notifier, s storage.Database) *Handler {
-	return &Handler{n: n, s: s}
-}
 
 func (h *Handler) Open(c *gin.Context) {
 	c.Writer.Write(pngFile)
@@ -139,5 +110,65 @@ func (h *Handler) SubmitTask(c *gin.Context) {
 	c.JSON(http.StatusOK, taskResponse{
 		TaskID:    t.ID,
 		TrackLink: fmt.Sprintf("%s/t/%s.png", DomainPrefix, t.ID),
+	})
+}
+
+func (h *Handler) ResumeTask(c *gin.Context) {
+	taskID := c.Query("id")
+	if len(taskID) > 40 {
+		return
+	}
+	task, err := h.s.FindTask(taskID)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, &gin.H{
+			"find task error": err.Error(),
+		})
+		return
+	}
+	if task.State != types.StateStopped {
+		// hmm...
+		return
+	}
+	task.State = types.StateResumed
+	if err := h.s.SaveTask(task); err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, &gin.H{
+			"find notification error": err.Error(),
+		})
+	}
+
+	// reset limiter
+	limiter.Recv.Reset(task.NotifyTo)
+	limiter.Sent.Reset(task.ID)
+}
+
+func (h *Handler) GetTask(c *gin.Context) {
+	taskID := c.Query("id")
+	if len(taskID) > 40 {
+		return
+	}
+	task, err := h.s.FindTask(taskID)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, &gin.H{
+			"find task error": err.Error(),
+		})
+		return
+	}
+	ns, err := h.s.FindNotification(taskID)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, &gin.H{
+			"find notification error": err.Error(),
+		})
+		return
+	}
+	events := make([]types.OpenEvent, len(ns))
+	for i, n := range ns {
+		events[i] = n.Event
+	}
+
+	c.JSON(http.StatusOK, taskGetResponse{
+		Comments: task.Comments,
+		State:    task.State.String(),
+		Submit:   task.SubmitAt,
+		Events:   events,
 	})
 }

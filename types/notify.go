@@ -6,9 +6,9 @@ import (
 )
 
 type OpenEvent struct {
-	Time time.Time
-	IP   string
-	UA   string
+	Time time.Time `json:"time,omitempty"`
+	IP   string    `json:"ip,omitempty"`
+	UA   string    `json:"ua,omitempty"`
 }
 
 type Notification struct {

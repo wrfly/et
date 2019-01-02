@@ -14,13 +14,13 @@ const (
 func (s State) String() string {
 	switch s {
 	case StateNormal:
-		return "StateNormal"
+		return "normal"
 	case StateStopped:
-		return "StateStopped"
+		return "stopped"
 	case StateResumed:
-		return "StateResumed"
+		return "resumed"
 	case StateTerminated:
-		return "StateTerminated"
+		return "terminated"
 	default:
 		return "unknown"
 	}
