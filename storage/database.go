@@ -19,5 +19,6 @@ type Database interface {
 	SaveNotification(types.Notification) error
 	// find all notifications of the specific task ID
 	FindNotification(taskID string) ([]types.Notification, error)
+	Status() types.ServiceStatus
 	Close() error
 }

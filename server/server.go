@@ -29,8 +29,8 @@ func Run(listen int, handler *api.Handler) error {
 
 		statusG := apiG.Group("/status")
 		{
-			statusG.GET("/task")
-			statusG.GET("/notified")
+			statusG.GET("/task", handler.StatusTask)
+			statusG.GET("/notified", handler.StatusNotified)
 		}
 	}
 

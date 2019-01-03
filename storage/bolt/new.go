@@ -12,6 +12,7 @@ const (
 	taskBucket         = "tasks"
 	notificationBucket = "notifications"
 	relationBucket     = "task->notification"
+	statusBucket       = "status"
 )
 
 func New(dbRoot string) (storage.Database, error) {
@@ -30,12 +31,21 @@ func New(dbRoot string) (storage.Database, error) {
 
 	// create buckets
 	if err := db.Update(func(tx *bolt.Tx) error {
-		if _, err := tx.CreateBucketIfNotExists([]byte(taskBucket)); err != nil {
+		_, err = tx.CreateBucketIfNotExists([]byte(taskBucket))
+		if err != nil {
 			return err
 		}
-		if _, err := tx.CreateBucketIfNotExists([]byte(relationBucket)); err != nil {
+
+		_, err = tx.CreateBucketIfNotExists([]byte(relationBucket))
+		if err != nil {
 			return err
 		}
+
+		_, err = tx.CreateBucketIfNotExists([]byte(statusBucket))
+		if err != nil {
+			return err
+		}
+
 		_, err = tx.CreateBucketIfNotExists([]byte(notificationBucket))
 		return err
 	}); err != nil {
