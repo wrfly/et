@@ -25,8 +25,8 @@ func (h *Handler) StatusNotified(c *gin.Context) {
 	h.preStatus(c)
 	status := h.s.Status()
 	if _, found := c.GetQuery("daily"); found {
-		greenBadge(c.Writer, "daily notified", status.Daily.TaskSubmit)
+		greenBadge(c.Writer, "daily notified", status.Daily.Notification)
 	} else {
-		blueBadge(c.Writer, "total notified", status.Total.TaskSubmit)
+		blueBadge(c.Writer, "total notified", status.Total.Notification)
 	}
 }
