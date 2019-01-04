@@ -22,9 +22,10 @@ Notify you when someone opens the email.
 
 ## Status
 
-![Task Submitted](https://track.kfd.me/api/status/task/total?svg)
-![Total Notified](https://track.kfd.me/api/status/notified/total?svg)
-![Daily Notified](https://track.kfd.me/api/status/notified/daily?svg)
+![Total Task Submitted](https://track.kfd.me/api/status/task?total)
+![Daily Task Submitted](https://track.kfd.me/api/status/task?daily)
+![Total Notified](https://track.kfd.me/api/status/notified?total)
+![Daily Notified](https://track.kfd.me/api/status/notified?daily)
 
 ## Design
 
@@ -53,10 +54,10 @@ Notify you when someone opens the email.
   - POST `../resume?id=****` resume the stopped task
   - GET `../get?id=****` get task status, all notifications sent
 - `/api/status`
-  - GET `../task/total` *total* task handled
-  - GET `../task/total?svg` return a status badge
-  - GET `../notified/total?svg` return a status badge of *total* email sent
-  - GET `../notified/daily?svg` return a status badge of *daily* email sent
+  - GET `../task?total` return a status badge of *total* task handled
+  - GET `../task?daily` return a status badge of *daily* task handled
+  - GET `../notified?total` return a status badge of *total* email sent
+  - GET `../notified?daily` return a status badge of *daily* email sent
 
 ## Constraints
 

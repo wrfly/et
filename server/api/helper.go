@@ -3,6 +3,8 @@ package api
 import (
 	"crypto/md5"
 	"fmt"
+	"html/template"
+	"io"
 	"time"
 
 	"github.com/wrfly/et/types"
@@ -53,4 +55,21 @@ func newNotification(task types.Task, ip, ua string) types.Notification {
 	}
 	n.ID = genNotificationID(n)
 	return n
+}
+
+func newBadge(w io.Writer, b *template.Template, name string, value interface{}) {
+	b.Execute(w, map[string]interface{}{
+		"name":      name,
+		"len_name":  len(name)*50 + 1,
+		"value":     fmt.Sprint(value),
+		"len_value": len(fmt.Sprint(value))*70 + 1,
+	})
+}
+
+func blueBadge(w io.Writer, name string, value interface{}) {
+	newBadge(w, badgeBlue, name, value)
+}
+
+func greenBadge(w io.Writer, name string, value interface{}) {
+	newBadge(w, badgeGreen, name, value)
 }

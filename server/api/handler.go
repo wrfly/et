@@ -1,6 +1,7 @@
 package api
 
 import (
+	"html/template"
 	"time"
 
 	"github.com/wrfly/et/notify"
@@ -13,16 +14,38 @@ const (
 )
 
 var (
-	pngFile  []byte
-	local, _ = time.LoadLocation(timeZone)
+	pngFile    []byte
+	local, _   = time.LoadLocation(timeZone)
+	badgeGreen *template.Template
+	badgeBlue  *template.Template
 )
 
 func init() {
-	_file, err := asset.Data.Asset("/png/pixel.png")
+	_file, err := asset.Data.Asset("/img/pixel.png")
 	if err != nil {
 		panic(err)
 	}
 	pngFile = _file.Bytes()
+
+	_file, err = asset.Data.Asset("/img/blue.svg")
+	if err != nil {
+		panic(err)
+	}
+	badgeBlue, err = template.New("blue").
+		Parse(string(_file.Bytes()))
+	if err != nil {
+		panic(err)
+	}
+
+	_file, err = asset.Data.Asset("/img/green.svg")
+	if err != nil {
+		panic(err)
+	}
+	badgeGreen, err = template.New("green").
+		Parse(string(_file.Bytes()))
+	if err != nil {
+		panic(err)
+	}
 }
 
 type Handler struct {
