@@ -1,1 +1,69 @@
 /* css */
+
+body {
+    background-color: rgb(73, 165, 207);
+    color: rgb(0, 0, 0);
+    font-family: monospace, Arial, Helvetica, sans-serif;
+}
+
+.center {
+    margin-top: 3%;
+    text-align: center;
+}
+
+a {
+    color: #00ff51b3;
+    text-decoration: none;
+    transition: .4s ease;
+}
+
+a:hover {
+    color: rgb(0, 26, 255);
+    transition: .4s ease;
+}
+
+main {
+    top: 20%;
+}
+
+footer {
+    padding-top: 50px;
+}
+
+.example {
+    margin-top: 10px;
+    padding-top: 30px;
+}
+
+input {
+    border-left: #fff 1px solid;
+    border-top: #fff 1px solid;
+    border-right: #fff 1px solid;
+    border-bottom: #fff 1px solid;
+    margin: 0px 0px 15px 10px;
+    padding-left: 10px;
+    font-size: 1em;
+    line-height: 1.5em;
+    height: 25px;
+    border: 1px;
+    border-radius: 4px;
+} 
+
+button {
+    height: 25px;
+    border: 2px;
+    border-radius: 4px;
+    transition: .2s ease;
+    font-style: italic;
+    font-weight: 900;
+}
+
+button:hover {
+    transition: .2s ease;
+    background-color: rgba(255, 136, 0, 0.397);
+    color: black;
+}
+
+code {
+    background-color: #10a7e2b3;
+}

@@ -6,22 +6,43 @@
     <title>Email Tracker</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="/main.css" />
+    <script src="/clipboard.min.js"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-{{ .gaID }}"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];function gtag() {dataLayer.push(arguments);}
+        gtag('js', new Date());gtag('config', 'UA-{{ .gaID }}');
+    </script> -->
 </head>
 <body>
-    <div>
-        <form onsubmit="return false;">
-            notifier: <input type="email" id="notifier"><br>
-            comments: <input type="text" id="comments"><br>
-            <input type="submit" value="Submit" id="submit">
-        </form>
+    <main class="center">
+        <h1>Email Tracker</h1>
+        <p>Send you notification emails when some one opens the email.</p>
+        <br><br>
+        <div>
+            <b>Notifier:</b><input type="email" placeholder="track@kfd.me" id="notifier" title="Tell who?">
+            <br>
+            <b>Comments:</b><input type="text" placeholder="This email sends to xxx" id="comments" title="How to identify this tracking task?">
+            <br>
+
+            <button id="submit" title="Submit Track Task">Submit Task</button>
+        </div>
+    </main>
+
+    <div class="center">
+        <div class="example" hidden="true" id="hidden_box">
+            Your hidden track png link is <code title="Click me to copy the code" id="link" data-clipboard-target="#link"></code>
+            <p><code title="Click me to copy the code" id="paste" data-clipboard-target="#paste"></code></p>
+            Insert the image into your email body.
+        </div>
+        <div class="example" hidden="true" id="error_box">
+            Error: <p id="error"></p>
+        </div>
     </div>
-    <div hidden="true" id="hidden_box">
-        Your hidden track png link is <code id="link"></code>
-        <p><code id="paste"></code></p>
-    </div>
-    <div hidden="true" id="error_box">
-        Error: <p id="error"></p>
-    </div>
+
+    <footer class="center">
+        Email Tracker | <a href="https://github.com/wrfly/et">@et</a>
+    </footer>
     <script type="text/javascript" src="/main.js"></script>
 </body>
 </html>

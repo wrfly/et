@@ -6,7 +6,9 @@ var submit = document.getElementById("submit");
 
 var box = document.getElementById("hidden_box");
 var link = document.getElementById("link");
+var clipboardLink = new ClipboardJS('#link');
 var paste = document.getElementById("paste");
+var clipboardImg = new ClipboardJS('#paste');
 
 var err_box = document.getElementById("error_box");
 var error = document.getElementById("error");
