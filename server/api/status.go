@@ -1,14 +1,12 @@
 package api
 
 import (
-	"time"
-
 	"github.com/gin-gonic/gin"
 )
 
 func (h *Handler) preStatus(c *gin.Context) {
-	c.Header("content-type", "image/svg+xml;charset=utf-8")
-	c.Header("date", time.Now().String())
+	c.Header("Content-Type", "image/svg+xml;charset=utf-8")
+	c.Header("Cache-Control", "no-cache")
 }
 
 func (h *Handler) StatusTask(c *gin.Context) {
