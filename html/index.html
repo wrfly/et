@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="/main.css" />
     <script src="/clipboard.min.js"></script>
+    <script src="/jquery-3.3.1.min.js"></script>
     <!-- Global site tag (gtag.js) - Google Analytics
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-{{ .gaID }}"></script>
     <script>
@@ -59,9 +60,7 @@
             <br>
             <button id="resume" title="Resume this task">OK, resume</button>
 
-            <div class="box" hidden id="result_box">
-                Resume result:
-            </div>
+            <div class="box" hidden id="result_box"></div>
         </div>
 
         <!-- get task status -->

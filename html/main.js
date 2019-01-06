@@ -1,59 +1,42 @@
 // js
 
-// input
-var notifier = document.getElementById("notifier");
-var comments = document.getElementById("comments");
-var taskID = document.getElementById("taskID");
-
-// buttons
-var submit = document.getElementById("submit");
-var resume = document.getElementById("resume");
-var status = document.getElementById("status");
-
 // boxes
-var submit_task_box = document.getElementById("submit_task_box");
 var link = document.getElementById("link");
 var clipboardLink = new ClipboardJS('#link');
 var paste = document.getElementById("paste");
 var clipboardImg = new ClipboardJS('#paste');
-var err_box = document.getElementById("error_box");
 var error = document.getElementById("error");
-var result_box = document.getElementById("result_box");
 
-submit.onclick = function () {
-    var xhr = new XMLHttpRequest();
-    var url = "/api/task/submit";
-    xhr.open("POST", url, true);
-    xhr.setRequestHeader("Content-type", "application/json");
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState != 4) {
-            return;
-        }
-        var json = JSON.parse(xhr.responseText);
-        if (xhr.status == 200) {
-            err_box.hidden = true;
-            console.debug("id:", json.id + ", link:" + json.link);
-            link.value = json.link;
-            var pngLink = '<img src="' + json.link + '">';
-            paste.value = pngLink;
-            submit_task_box.hidden = false;
-        } else {
-            submit_task_box.hidden = true;
-            error.textContent = json.err;
-            err_box.hidden = false;
-            console.debug("err:", json);
-        }
-    }
+$("#submit")[0].onclick = function () {
+    var r = $("#result_box")[0];
     var d = new Date();
-    var data = JSON.stringify({
-        "notifier": notifier.value,
-        "comments": comments.value,
-        "offset": d.getTimezoneOffset()
-        });
-    xhr.send(data);
+    $.ajax({
+        url: '/api/task/submit',
+        contentType: 'application/json',
+        type: 'post',
+        data: JSON.stringify({
+            "notifier": $("#notifier").val(),
+            "comments": $("#comments").val(),
+            "offset": d.getTimezoneOffset()
+            }),
+        success: function (data) {
+            $("#error_box")[0].hidden = true;
+            console.debug("id:", data.id + ", link:" + data.link);
+            $("#link")[0].value = data.link;
+            var pngLink = '<img src="' + data.link + '">';
+            $("#paste")[0].value = pngLink;
+            $('#submit_task_box')[0].hidden = false;
+        },
+        error: function (data) {
+            $('#submit_task_box')[0].hidden = true;
+            $("#error").empty();
+            $("#error").append(data.responseJSON.err);
+            $("#error_box")[0].hidden = false;
+        }
+    });
 
     // after submit new task, reset the tooltip
-    var tooltip = document.getElementsByClassName("tooltip");
+    var tooltip = $("#tooltip");
     for (i = 0; i < tooltip.length; i++) {
         tooltip[i].children[1].textContent = "Click to copy!";
     };
@@ -89,28 +72,24 @@ function toggle(id, others=[]) {
 }
 
 function reset() {
-    err_box.hidden = true;
-    submit_task_box.hidden = true;
+    $("#error_box")[0].hidden = true;
+    $('#submit_task_box')[0].hidden = true;
 }
 
-resume.onclick = function () {
-    var xhr = new XMLHttpRequest();
-    var url = "/api/task/resume?id=" + taskID.value;
-    xhr.open("POST", url, true);
-    xhr.setRequestHeader("Content-type", "application/json");
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState != 4) {
-            return;
+$('#resume')[0].onclick = function () {
+    var r = $("#result_box")[0];
+    $.ajax({
+        url: '/api/task/resume?id=' + $('#taskID').val(),
+        type: 'post',
+        success: function (data) {
+            console.info(data);
+            r.hidden = false;
+            r.html = data.responseJSON;
+        },
+        error: function (data){
+            console.info(data);
+            r.hidden = false;
+            r.html = data.responseJSON;
         }
-        if (xhr.status == 200) {
-            result_box.textContent = xhr.responseText;
-        } else {
-            result_box.textContent = xhr.responseText;
-        }
-        result_box.hidden = false;
-        if (xhr.responseText){
-            console.debug("result:", xhr.responseText);
-        }
-    }
-    xhr.send();
+    });
 };
