@@ -35,43 +35,62 @@
             <b>Comments:</b><input type="text" placeholder="This email sends to xxx" id="comments" title="How to identify this tracking task?">
             <br>
             <button id="submit" title="Submit Track Task">OK, submit</button>
+
+            <div class="box" hidden id="submit_task_box">
+                Insert this image into your email body: <br>
+                <div class="tooltip">
+                    <textarea id="link" autocorrect="off" autocapitalize="off" spellcheck="false" readonly  data-clipboard-target="#link" >
+                    </textarea>
+                    <span class="tooltiptext">Click to copy!</span>
+                </div>
+
+                <br>Or with the HTML code : <br>
+                <div class="tooltip">
+                    <textarea id="paste" autocorrect="off" autocapitalize="off" spellcheck="false" readonly  data-clipboard-target="#paste" >
+                    </textarea>
+                    <span class="tooltiptext">Click to copy!</span>
+                </div>
+            </div>
         </div>
 
         <!-- resume task -->
         <div id="t2" hidden>
             <b>TaskID:</b><input type="text" placeholder="resume-for-further-notification" id="taskID" title="Resume which task?">
             <br>
-            <button id="submit" title="Resume this task">OK, resume</button>
+            <button id="resume" title="Resume this task">OK, resume</button>
+
+            <div class="box" hidden id="result_box">
+                Resume result:
+            </div>
         </div>
 
         <!-- get task status -->
         <div id="t3" hidden>
             <b>TaskID:</b><input type="text" placeholder="get-task-notification-status" id="taskID" title="Get which task?">
             <br>
-            <button id="submit" title="Submit Track Task">OK, got</button>
+            <button id="status" title="Submit Track Task">OK, check</button>
+
+            <div class="box" hidden id="status_box">
+                Insert this image into your email body: <br>
+                <div class="tooltip">
+                    <textarea id="link" autocorrect="off" autocapitalize="off" spellcheck="false" readonly  data-clipboard-target="#link" >
+                    </textarea>
+                    <span class="tooltiptext">Click to copy!</span>
+                </div>
+    
+                <br>Or with the HTML code : <br>
+                <div class="tooltip">
+                    <textarea id="paste" autocorrect="off" autocapitalize="off" spellcheck="false" readonly  data-clipboard-target="#paste" >
+                    </textarea>
+                    <span class="tooltiptext">Click to copy!</span>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="center">
-        <div class="example" hidden="true" id="hidden_box">
-            Insert this image into your email body: <br>
-            <div class="tooltip">
-                <textarea id="link" autocorrect="off" autocapitalize="off" spellcheck="false" readonly  data-clipboard-target="#link" >
-                </textarea>
-                <span class="tooltiptext">Click to copy!</span>
-            </div>
-
-            <br>Or with the HTML code : <br>
-            <div class="tooltip">
-                <textarea id="paste" autocorrect="off" autocapitalize="off" spellcheck="false" readonly  data-clipboard-target="#paste" >
-                </textarea>
-                <span class="tooltiptext">Click to copy!</span>
-            </div>
-        </div>
-
-        <div class="example" hidden="true" id="error_box">
-            Error: <p id="error"></p>
-        </div>
+    <!-- error box -->
+    <div class="center box" hidden id="error_box">
+        Error: <p id="error"></p>
     </div>
 
     <footer class="center">
