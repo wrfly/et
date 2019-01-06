@@ -6,10 +6,6 @@ body {
     font-family: monospace, Arial, Helvetica, sans-serif;
 }
 
-.center {
-    margin-top: 3%;
-    text-align: center;
-}
 
 a {
     color: #00ff51b3;
@@ -30,16 +26,11 @@ footer {
     padding-top: 50px;
 }
 
-.example {
-    margin-top: 10px;
-    padding-top: 30px;
-}
-
-input {
-    border-left: #fff 1px solid;
-    border-top: #fff 1px solid;
-    border-right: #fff 1px solid;
-    border-bottom: #fff 1px solid;
+input, textarea {
+    border-left: #fff 1px;
+    border-top: #fff 1px;
+    border-right: #fff 1px;
+    border-bottom: #fff 1px;
     margin: 0px 0px 15px 10px;
     padding-left: 10px;
     font-size: 1em;
@@ -60,10 +51,69 @@ button {
 
 button:hover {
     transition: .2s ease;
-    background-color: rgba(255, 136, 0, 0.397);
-    color: black;
+    background-color: #1163ce;
+    color: rgb(207, 207, 207);
 }
 
 code {
     background-color: #10a7e2b3;
+}
+
+textarea {
+    margin-top: 10px;
+    padding-top: 3px;
+    z-index: auto;
+    position: relative;
+    line-height: 18.2px;
+    transition: none 0s ease 0s;
+    width: 300px;
+    min-height: 50px;
+}
+
+.center {
+    margin-top: 2%;
+    text-align: center;
+}
+
+.example {
+    margin-top: 10px;
+    padding-top: 30px;
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltiptext {
+    top: -5px;
+    left: 105%;
+    visibility: hidden;
+    width: 150px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+   
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 1;
+    top: 30%;
+    left: 102%; 
+}
+
+.tooltip .tooltiptext::after {
+    content: " ";
+    position: absolute;
+    top: 50%;
+    right: 100%; /* To the left of the tooltip */
+    margin-top: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent black transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
 }
