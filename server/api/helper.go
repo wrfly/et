@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"html/template"
 	"io"
+	"strings"
 	"time"
 
 	"github.com/wrfly/et/types"
@@ -72,4 +73,9 @@ func blueBadge(w io.Writer, name string, value interface{}) {
 
 func greenBadge(w io.Writer, name string, value interface{}) {
 	newBadge(w, badgeGreen, name, value)
+}
+
+func taskLinkToID(link string) string {
+	x := strings.Split(link, "/")
+	return strings.Split(x[len(x)-1], ".")[0]
 }

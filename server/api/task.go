@@ -115,6 +115,7 @@ func (h *Handler) SubmitTask(c *gin.Context) {
 
 func (h *Handler) ResumeTask(c *gin.Context) {
 	taskID := c.Query("id")
+	taskID = taskLinkToID(taskID)
 	if len(taskID) > 40 {
 		c.AbortWithStatusJSON(http.StatusBadRequest, &gin.H{
 			"get task error": "taskID too long",
@@ -152,6 +153,7 @@ func (h *Handler) ResumeTask(c *gin.Context) {
 
 func (h *Handler) GetTask(c *gin.Context) {
 	taskID := c.Query("id")
+	taskID = taskLinkToID(taskID)
 	if len(taskID) > 40 {
 		c.AbortWithStatusJSON(http.StatusBadRequest, &gin.H{
 			"get task error": "taskID too long",
