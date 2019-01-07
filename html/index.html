@@ -6,8 +6,9 @@
     <title>Email Tracker</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="/main.css" />
-    <script src="/clipboard.min.js"></script>
     <script src="/jquery-3.3.1.min.js"></script>
+    <script src="/clipboard.min.js"></script>
+    <script src="/buttons.js"></script>
     <!-- Global site tag (gtag.js) - Google Analytics
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-{{ .gaID }}"></script>
     <script>
@@ -19,6 +20,11 @@
     <br>
     <div class="center">
         <h1>Email Tracker</h1>
+        <img src="/api/status/task.svg?total">
+        <img src="/api/status/task.svg?daily">
+        <img src="/api/status/notified.svg?total">
+        <img src="/api/status/notified.svg?total">
+        <a class="github-button" href="https://github.com/wrfly/et" data-icon="octicon-star" data-show-count="true" aria-label="Star wrfly/et on GitHub">Star</a>
         <p>Send you notification emails when some one opens the email.</p>
         <br>
         <button onclick="toggle('t1', ['t2','t3'])">Submit Track Task</button>
@@ -56,7 +62,7 @@
 
         <!-- resume task -->
         <div id="t2" hidden>
-            <b>Link:</b><input type="text" style="width: 521px"  placeholder="https://track.kfd.me/t/xxxxx-xxxxx-xxxxx-xxxxx-xxxxx-xxxxx-xx.png" id="taskID" title="Resume which task?">
+            <b>Link:</b><input type="text" style="width: 521px"  placeholder="https://track.kfd.me/t/xxxxx-xxxxx-xxxxx-xxxxx-xxxxx-xxxxx-xx.png" class="taskID" title="Resume which task?">
             <br>
             <button id="resume" title="Resume this task">OK, resume</button>
 
@@ -65,24 +71,12 @@
 
         <!-- get task status -->
         <div id="t3" hidden>
-            <b>Link:</b><input type="text" style="width: 521px" placeholder="https://track.kfd.me/t/xxxxx-xxxxx-xxxxx-xxxxx-xxxxx-xxxxx-xx.png" id="taskID" title="Get which task?">
+            <b>Link:</b><input type="text" style="width: 521px" placeholder="https://track.kfd.me/t/xxxxx-xxxxx-xxxxx-xxxxx-xxxxx-xxxxx-xx.png" class="taskID" title="Get which task?">
             <br>
             <button id="status" title="Submit Track Task">OK, check</button>
 
             <div class="box" hidden id="status_box">
-                Insert this image into your email body: <br>
-                <div class="tooltip">
-                    <textarea id="link" autocorrect="off" autocapitalize="off" spellcheck="false" readonly  data-clipboard-target="#link" >
-                    </textarea>
-                    <span class="tooltiptext">Click to copy!</span>
-                </div>
-    
-                <br>Or with the HTML code : <br>
-                <div class="tooltip">
-                    <textarea id="paste" autocorrect="off" autocapitalize="off" spellcheck="false" readonly  data-clipboard-target="#paste" >
-                    </textarea>
-                    <span class="tooltiptext">Click to copy!</span>
-                </div>
+
             </div>
         </div>
     </div>
@@ -92,9 +86,9 @@
         Error: <p id="error"></p>
     </div>
 
-    <footer class="center">
-        Email Tracker | <a href="https://github.com/wrfly/et">@et</a>
+    <footer style="text-align: center;">
+        ET - Email Tracker | Loved by <a class="github-button" href="https://github.com/wrfly" aria-label="Follow @wrfly on GitHub">@wrfly</a>
     </footer>
-    <script type="text/javascript" src="/main.js"></script>
+    <script src="/main.js"></script>
 </body>
 </html>

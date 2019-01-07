@@ -21,7 +21,6 @@ $("#submit")[0].onclick = function () {
             }),
         success: function (data) {
             $("#error_box")[0].hidden = true;
-            console.debug("id:", data.id + ", link:" + data.link);
             $("#link")[0].value = data.link;
             var pngLink = '<img src="' + data.link + '">';
             $("#paste")[0].value = pngLink;
@@ -36,10 +35,9 @@ $("#submit")[0].onclick = function () {
     });
 
     // after submit new task, reset the tooltip
-    var tooltip = $("#tooltip");
-    for (i = 0; i < tooltip.length; i++) {
-        tooltip[i].children[1].textContent = "Click to copy!";
-    };
+    $(".tooltiptext").each(function(){
+        this.innerHTML = 'Click to copy!';
+    })
 };
 
 link.onclick = function (){
@@ -78,18 +76,42 @@ function reset() {
 
 $('#resume')[0].onclick = function () {
     var r = $("#result_box")[0];
+    var taskID = $('.taskID')[0].value;
     $.ajax({
-        url: '/api/task/resume?id=' + $('#taskID').val(),
+        url: '/api/task/resume?id=' + taskID,
         type: 'post',
         success: function (data) {
-            console.info(data);
-            r.hidden = false;
-            r.html = data.responseJSON;
+            console.info(data.responseText);
+            r.innerHTML = data.responseText;
         },
         error: function (data){
-            console.info(data);
-            r.hidden = false;
-            r.html = data.responseJSON;
+            console.error(data.responseText);
+            r.innerHTML = data.responseText;
         }
     });
+    r.hidden = false;
 };
+
+$('#status')[0].onclick = function () {
+    var r = $("#status_box")[0];
+    var taskID = $('.taskID')[1].value;
+    console.info(taskID);
+    $.ajax({
+        url: '/api/task/get?id=' + taskID,
+        type: 'get',
+        success: function (data) {
+            console.info(data.responseJSON);
+            r.innerHTML = data.responseJSON;
+        },
+        error: function (data){
+            console.error(data.responseText);
+            r.innerHTML = data.responseText;
+        }
+    });
+    r.hidden = false;
+}
+
+// select all
+$("input").each(function(){
+    this.onclick = function(){ this.select();}
+})

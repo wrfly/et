@@ -118,26 +118,30 @@ func (h *Handler) ResumeTask(c *gin.Context) {
 	taskID = taskLinkToID(taskID)
 	if len(taskID) > 40 {
 		c.AbortWithStatusJSON(http.StatusBadRequest, &gin.H{
-			"get task error": "taskID too long",
+			"taskID": taskID,
+			"err":    "taskID too long",
 		})
 		return
 	}
 	task, err := h.s.FindTask(taskID)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, &gin.H{
-			"find task error": err.Error(),
+			"taskID":     taskID,
+			"find error": err.Error(),
 		})
 		return
 	}
 	if task.State != types.StateStopped {
 		c.AbortWithStatusJSON(http.StatusBadRequest, &gin.H{
-			"resume task error": "task not stopped",
+			"taskID":       taskID,
+			"resume error": "task not stopped",
 		})
 		return
 	}
 	task.State = types.StateResumed
 	if err := h.s.SaveTask(task); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, &gin.H{
+			"taskID":                  taskID,
 			"find notification error": err.Error(),
 		})
 		return
@@ -156,20 +160,23 @@ func (h *Handler) GetTask(c *gin.Context) {
 	taskID = taskLinkToID(taskID)
 	if len(taskID) > 40 {
 		c.AbortWithStatusJSON(http.StatusBadRequest, &gin.H{
-			"get task error": "taskID too long",
+			"taskID": taskID,
+			"err":    "taskID too long",
 		})
 		return
 	}
 	task, err := h.s.FindTask(taskID)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, &gin.H{
-			"find task error": err.Error(),
+			"taskID":     taskID,
+			"find error": err.Error(),
 		})
 		return
 	}
 	ns, err := h.s.FindNotification(taskID)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, &gin.H{
+			"taskID":                  taskID,
 			"find notification error": err.Error(),
 		})
 		return
