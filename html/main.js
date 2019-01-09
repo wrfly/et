@@ -94,18 +94,29 @@ $('#resume')[0].onclick = function () {
 
 $('#status')[0].onclick = function () {
     var r = $("#status_box")[0];
+    var children = r.children;
     var taskID = $('.taskID')[1].value;
-    console.info(taskID);
+    var d = new Date();
     $.ajax({
         url: '/api/task/get?id=' + taskID,
         type: 'get',
         success: function (data) {
-            console.info(data.responseJSON);
-            r.innerHTML = data.responseJSON;
+            children["_state"].innerText = data.state;
+            children["_comments"].innerText = data.comments;
+            d.setTime(Date.parse(data.submitAt));
+            children["_submit"].innerText = d.toLocaleString();
+            var events = children["_events"];
+            data.events.forEach(e => {
+                d.setTime(Date.parse(e.time));
+                var row = events.insertRow(-1);
+                row.insertCell(0).innerHTML = d.toLocaleString();
+                row.insertCell(1).innerHTML = e.ip;
+                row.insertCell(2).innerHTML = e.ua;
+            });
         },
         error: function (data){
-            console.error(data.responseText);
-            r.innerHTML = data.responseText;
+            console.error(data);
+            r.innerHTML = data;
         }
     });
     r.hidden = false;
