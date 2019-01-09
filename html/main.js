@@ -113,13 +113,17 @@ $('#status')[0].onclick = function () {
                 row.insertCell(1).innerHTML = e.ip;
                 row.insertCell(2).innerHTML = e.ua;
             });
+            $("#error_box")[0].hidden = false;
+            r.hidden = false;
         },
         error: function (data){
             console.error(data);
-            r.innerHTML = data;
+            r.hidden = true;
+            $("#error").empty();
+            $("#error").append(data.responseText);
+            $("#error_box")[0].hidden = false;
         }
     });
-    r.hidden = false;
 }
 
 // select all
