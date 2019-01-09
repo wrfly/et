@@ -1,1 +1,137 @@
 /* css */
+
+body {
+    background-color: rgb(73, 165, 207);
+    color: rgb(0, 0, 0);
+    font-family: monospace, Arial, Helvetica, sans-serif;
+}
+
+
+a {
+    color: #00ff51b3;
+    text-decoration: none;
+    transition: .4s ease;
+}
+
+a:hover {
+    color: rgb(0, 26, 255);
+    transition: .4s ease;
+}
+
+main {
+    top: 20%;
+}
+
+footer {
+    padding-top: 50px;
+}
+
+input, textarea {
+    border-left: #fff 1px;
+    border-top: #fff 1px;
+    border-right: #fff 1px;
+    border-bottom: #fff 1px;
+    margin: 0px 0px 15px 10px;
+    padding-left: 10px;
+    font-size: 1em;
+    line-height: 1.5em;
+    height: 25px;
+    border: 1px;
+    border-radius: 4px;
+} 
+
+button {
+    height: 25px;
+    border: 2px;
+    border-radius: 4px;
+    transition: .2s ease;
+    font-style: italic;
+    font-weight: 900;
+}
+
+button:hover {
+    transition: .2s ease;
+    background-color: #1163ce;
+    color: rgb(207, 207, 207);
+}
+
+code {
+    background-color: #10a7e2b3;
+}
+
+textarea {
+    margin-top: 10px;
+    padding-top: 3px;
+    z-index: auto;
+    position: relative;
+    line-height: 18.2px;
+    transition: none 0s ease 0s;
+    width: 300px;
+    min-height: 50px;
+}
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 50%;
+    margin: 0px auto;
+}
+  
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #40a0c5b3;
+}
+
+.center {
+    margin-top: 2%;
+    text-align: center;
+    margin: 0px auto;
+}
+
+.box {
+    margin-top: 10px;
+    padding-top: 30px;
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltiptext {
+    top: -5px;
+    left: 105%;
+    visibility: hidden;
+    width: 150px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+   
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 1;
+    top: 30%;
+    left: 102%; 
+}
+
+.tooltip .tooltiptext::after {
+    content: " ";
+    position: absolute;
+    top: 50%;
+    right: 100%; /* To the left of the tooltip */
+    margin-top: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent black transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
