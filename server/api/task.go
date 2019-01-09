@@ -53,7 +53,7 @@ func (h *Handler) Open(c *gin.Context) {
 
 		logrus.Debugf("send notification to %s", task.NotifyTo)
 		body, code, err := h.n.Send(task.NotifyTo,
-			notify.NewContent(notification, task.Comments))
+			notify.NewContent(notification, task.Offset, task.Comments))
 		if err != nil {
 			logrus.Errorf("send notification err: %s", err)
 		}
@@ -173,14 +173,7 @@ func (h *Handler) GetTask(c *gin.Context) {
 		})
 		return
 	}
-	ns, err := h.s.FindNotification(taskID)
-	if err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, &gin.H{
-			"taskID":                  taskID,
-			"find notification error": err.Error(),
-		})
-		return
-	}
+	ns, _ := h.s.FindNotification(taskID)
 	events := make([]types.OpenEvent, len(ns))
 	for i, n := range ns {
 		events[i] = n.Event

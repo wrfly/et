@@ -2,6 +2,7 @@ package notify
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/wrfly/et/types"
 )
@@ -53,11 +54,12 @@ func TestNotifier(n Notifier) (string, error) {
 	return body, nil
 }
 
-func NewContent(n types.Notification, comments string) string {
+func NewContent(n types.Notification,
+	offset time.Duration, comments string) string {
 	return fmt.Sprintf(NotifyTemplate,
 		comments,
 		n.Event.IP,
 		n.Event.UA,
-		n.Event.Time.Format("2006-01-02 15:04:05"),
+		n.Event.Time.Add(offset).Format("2006-01-02 15:04:05"),
 	)
 }

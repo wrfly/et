@@ -113,7 +113,7 @@ $('#status')[0].onclick = function () {
                 row.insertCell(1).innerHTML = e.ip;
                 row.insertCell(2).innerHTML = e.ua;
             });
-            $("#error_box")[0].hidden = false;
+            $("#error_box")[0].hidden = true;
             r.hidden = false;
         },
         error: function (data){
