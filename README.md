@@ -27,6 +27,8 @@ Notify you when someone opens the email.
 [![Total Notified](https://et.kfd.me/api/status/notified.svg?total)](https://et.kfd.me/api/status/notified.svg?total)
 [![Daily Notified](https://et.kfd.me/api/status/notified.svg?daily)](https://et.kfd.me/api/status/notified.svg?daily)
 
+![logo](/et.png)
+
 ## Design
 
 1. Users provide their **email address** to receive notifications.
