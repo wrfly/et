@@ -28,7 +28,7 @@ Comments: %s
 ---
 
 Best Regards,
-https://track.kfd.me
+https://et.kfd.me
 `
 )
 
