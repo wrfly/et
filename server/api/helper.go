@@ -51,7 +51,7 @@ func newNotification(task types.Task, ip, ua string) types.Notification {
 		Event: types.OpenEvent{
 			IP:   ip,
 			UA:   ua,
-			Time: time.Now().Add(task.Offset),
+			Time: time.Now(),
 		},
 	}
 	n.ID = genNotificationID(n)

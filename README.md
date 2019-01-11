@@ -22,10 +22,12 @@ Notify you when someone opens the email.
 
 ## Status
 
-[![Total Task Submitted](https://track.kfd.me/api/status/task.svg?total)](https://track.kfd.me/api/status/task.svg?total)
-[![Daily Task Submitted](https://track.kfd.me/api/status/task.svg?daily)](https://track.kfd.me/api/status/task.svg?daily)
-[![Total Notified](https://track.kfd.me/api/status/notified.svg?total)](https://track.kfd.me/api/status/notified.svg?total)
-[![Daily Notified](https://track.kfd.me/api/status/notified.svg?daily)](https://track.kfd.me/api/status/notified.svg?total)
+[![Total Task Submitted](https://et.kfd.me/api/status/task.svg?total)](https://et.kfd.me/api/status/task.svg?total)
+[![Daily Task Submitted](https://et.kfd.me/api/status/task.svg?daily)](https://et.kfd.me/api/status/task.svg?daily)
+[![Total Notified](https://et.kfd.me/api/status/notified.svg?total)](https://et.kfd.me/api/status/notified.svg?total)
+[![Daily Notified](https://et.kfd.me/api/status/notified.svg?daily)](https://et.kfd.me/api/status/notified.svg?daily)
+
+![logo](/et.png)
 
 ## Design
 
