@@ -75,6 +75,7 @@ function reset() {
 }
 
 $('#resume')[0].onclick = function () {
+    reset();
     var r = $("#result_box")[0];
     var taskID = $('.taskID')[0].value;
     $.ajax({
@@ -93,6 +94,7 @@ $('#resume')[0].onclick = function () {
 };
 
 $('#status')[0].onclick = function () {
+    reset();
     var r = $("#status_box")[0];
     var children = r.children;
     var taskID = $('.taskID')[1].value;
@@ -106,15 +108,20 @@ $('#status')[0].onclick = function () {
             d.setTime(Date.parse(data.submitAt));
             children["_submit"].innerText = d.toLocaleString();
             var events = children["_events"];
-            data.events.forEach(e => {
-                d.setTime(Date.parse(e.time));
-                var row = events.insertRow(-1);
-                row.insertCell(0).innerHTML = d.toLocaleString();
-                row.insertCell(1).innerHTML = e.ip;
-                row.insertCell(2).innerHTML = e.ua;
-            });
-            $("#error_box")[0].hidden = true;
+            for(var i = events.rows.length; i > 1;i--){
+                events.deleteRow(i-1);
+            };
+            if (data.events){
+                data.events.forEach(e => {
+                    d.setTime(Date.parse(e.time));
+                    var row = events.insertRow(-1);
+                    row.insertCell(0).innerHTML = d.toLocaleString();
+                    row.insertCell(1).innerHTML = e.ip;
+                    row.insertCell(2).innerHTML = e.ua;
+                });
+            }
             r.hidden = false;
+            $("#error_box")[0].hidden = true;
         },
         error: function (data){
             console.error(data);
