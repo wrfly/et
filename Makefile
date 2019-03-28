@@ -15,18 +15,7 @@ CTIMEVAR := -X main.CommitID=$(COMMITID) \
         -X main.BuildAt=$(BUILDAT)
 GO_LDFLAGS := -ldflags "-s -w $(CTIMEVAR)" -tags netgo
 
-GLIDE_URL := https://github.com/Masterminds/glide/releases\
-	/download/v0.13.1/glide-v0.13.1-linux-amd64.tar.gz
-
-.PHONY: prepare
-prepare:
-ifeq (, $(shell which glide))
-	wget $(GLIDE_URL) -O glide.tgz -q
-	tar xzf glide.tgz
-	linux-amd64/glide install
-else
-	@echo "Glide is installed"
-endif
+export GO111MODULE=on
 
 .PHONY: bin
 bin:
@@ -38,7 +27,7 @@ build:
 
 .PHONY: test
 test:
-	go test -v --cover `glide nv`
+	go test -v --cover ./...
 
 .PHONY: dev
 dev: bin asset build
