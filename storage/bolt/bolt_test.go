@@ -50,4 +50,7 @@ func TestBoltStorage(t *testing.T) {
 	if len(ns) != 5 {
 		t.Error("ns != 5")
 	}
+	for _, n := range ns {
+		t.Logf("%s", n.Event.Time)
+	}
 }

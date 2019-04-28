@@ -2,6 +2,7 @@ package bolt
 
 import (
 	"fmt"
+	"sort"
 	"strconv"
 
 	"github.com/boltdb/bolt"
@@ -91,6 +92,10 @@ func (b *boltStorage) SaveNotification(n types.Notification) error {
 // FindNotification of the specific task ID
 func (b *boltStorage) FindNotification(ID string) ([]types.Notification, error) {
 	ns := make([]types.Notification, 0, 100)
+
+	defer func() {
+		sort.Slice(ns, func(i, j int) bool { return ns[i].Event.Time.After(ns[j].Event.Time) })
+	}()
 
 	// TODO: need to use relation bucket for this
 	return ns, b.db.View(func(tx *bolt.Tx) error {
