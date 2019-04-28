@@ -12,9 +12,9 @@ import (
 func Run(listen int, handler *api.Handler) error {
 	e := gin.Default()
 	// index
-	for _, a := range asset.Data.List() {
-		e.HEAD(a.Name(), gin.WrapH(asset.Data))
-		e.GET(a.Name(), gin.WrapH(asset.Data))
+	for _, a := range asset.List() {
+		e.HEAD(a.Name(), gin.WrapF(asset.Handler))
+		e.GET(a.Name(), gin.WrapF(asset.Handler))
 	}
 
 	// api

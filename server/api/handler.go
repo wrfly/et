@@ -21,13 +21,13 @@ var (
 )
 
 func init() {
-	_file, err := asset.Data.Asset("/img/pixel.png")
+	_file, err := asset.Find("/img/pixel.png")
 	if err != nil {
 		panic(err)
 	}
 	pngFile = _file.Bytes()
 
-	_file, err = asset.Data.Asset("/img/blue.svg")
+	_file, err = asset.Find("/img/blue.svg")
 	if err != nil {
 		panic(err)
 	}
@@ -37,7 +37,7 @@ func init() {
 		panic(err)
 	}
 
-	_file, err = asset.Data.Asset("/img/green.svg")
+	_file, err = asset.Find("/img/green.svg")
 	if err != nil {
 		panic(err)
 	}

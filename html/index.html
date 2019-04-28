@@ -80,14 +80,17 @@
             <button id="status" title="Submit Track Task">OK, check</button>
 
             <div class="box" hidden id="status_box">
-                Task Status: <b id="_state"></b>
-                Submit At: <b id="_submit"></b>
-                <br>
-                Comments: <b id="_comments"></b>
-                <br>
-                Events: <table id="_events" class="box">
+                <table class="box" id="_basic_status">
                     <tr>
-                        <th>Time</th>
+                        <th>Task Status</th>
+                        <th>Submit At</th>
+                        <th>Comments</th>
+                    </tr>
+                </table>
+                <br>
+                <table id="_events" class="box" style="width: 70%;">
+                    <tr>
+                        <th style="min-width:180px">Time</th>
                         <th>IP</th>
                         <th>UA</th>
                     </tr>
