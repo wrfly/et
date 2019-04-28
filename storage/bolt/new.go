@@ -3,50 +3,46 @@ package bolt
 import (
 	"fmt"
 	"os"
+	"path"
 
 	"github.com/boltdb/bolt"
 	"github.com/wrfly/et/storage"
 )
 
-const (
-	taskBucket         = "tasks"
-	notificationBucket = "notifications"
-	relationBucket     = "task->notification"
-	statusBucket       = "status"
-)
-
-func New(dbRoot string) (storage.Database, error) {
-	if f, err := os.Stat(dbRoot); err != nil {
-		return nil, err
-	} else {
-		if !f.IsDir() {
-			return nil, fmt.Errorf("can not create boltDB, dbRoot is not a dir")
-		}
+// New storage
+func New(dbRootPath string) (storage.Database, error) {
+	f, err := os.Stat(dbRootPath)
+	if err != nil {
+		return nil, fmt.Errorf("get %s stat error: %s", dbRootPath, err)
+	}
+	if !f.IsDir() {
+		return nil, fmt.Errorf("can not create boltDB, dbRootPath is not a dir")
 	}
 
-	db, err := bolt.Open(dbRoot+"/email-tracker.db", 0600, nil)
+	dbFilePath := path.Join(dbRootPath, "email-tracker.db")
+	db, err := bolt.Open(dbFilePath, 0600, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	// create buckets
 	if err := db.Update(func(tx *bolt.Tx) error {
-		_, err = tx.CreateBucketIfNotExists([]byte(taskBucket))
+		_, err = tx.CreateBucketIfNotExists(_taskBucket)
 		if err != nil {
 			return err
 		}
 
-		_, err = tx.CreateBucketIfNotExists([]byte(relationBucket))
+		_, err = tx.CreateBucketIfNotExists(_relationBucket)
 		if err != nil {
 			return err
 		}
 
-		_, err = tx.CreateBucketIfNotExists([]byte(statusBucket))
+		_, err = tx.CreateBucketIfNotExists(_statusBucket)
 		if err != nil {
 			return err
 		}
 
-		_, err = tx.CreateBucketIfNotExists([]byte(notificationBucket))
+		_, err = tx.CreateBucketIfNotExists(_notificationBucket)
 		return err
 	}); err != nil {
 		return nil, err

@@ -1,6 +1,7 @@
 package bolt
 
 import (
+	"fmt"
 	"testing"
 	"time"
 
@@ -30,7 +31,7 @@ func TestBoltStorage(t *testing.T) {
 	}
 
 	for i := 0; i < 5; i++ {
-		nID := "notificationID" + time.Now().String()
+		nID := fmt.Sprintf("ID:%d", time.Now().Nanosecond())
 		n := types.Notification{
 			ID:     nID,
 			TaskID: ID,
@@ -48,6 +49,9 @@ func TestBoltStorage(t *testing.T) {
 		t.Fatal(err)
 	}
 	if len(ns) != 5 {
-		t.Error("ns != 5")
+		t.Errorf("ns != 5 (%d)", len(ns))
+	}
+	for _, n := range ns {
+		t.Logf("%s", n.Event.Time)
 	}
 }

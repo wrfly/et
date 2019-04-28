@@ -103,10 +103,16 @@ $('#status')[0].onclick = function () {
         url: '/api/task/get?id=' + taskID,
         type: 'get',
         success: function (data) {
-            children["_state"].innerText = data.state;
-            children["_comments"].innerText = data.comments;
+            var state_box = children[0];
+            for(var i = state_box.rows.length; i > 1;i--){
+                state_box.deleteRow(i-1);
+            };
+            var row = state_box.insertRow(-1);
+            row.insertCell(0).innerHTML = data.state;
             d.setTime(Date.parse(data.submitAt));
-            children["_submit"].innerText = d.toLocaleString();
+            row.insertCell(1).innerHTML = d.toLocaleString();
+            row.insertCell(2).innerHTML = data.comments;
+
             var events = children["_events"];
             for(var i = events.rows.length; i > 1;i--){
                 events.deleteRow(i-1);
