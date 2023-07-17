@@ -3,11 +3,12 @@ package main
 import (
 	"fmt"
 	"os"
+	"reflect"
 	"strings"
 
 	"github.com/sirupsen/logrus"
+	"github.com/urfave/cli/v2"
 	"github.com/wrfly/ecp"
-	"gopkg.in/urfave/cli.v2"
 
 	"github.com/wrfly/et/config"
 )
@@ -78,10 +79,11 @@ func main() {
 			}
 
 			// set default value
-			if err := ecp.Default(conf); err != nil {
-				logrus.Fatalf("ecp set default value error: %s", err)
+			parser := ecp.New()
+			parser.BuildKey = func(parentName, structName string, tag reflect.StructTag) string {
+				return parentName + "_" + structName
 			}
-			if err := ecp.Parse(conf, strings.ToUpper(appName)); err != nil {
+			if err := parser.Parse(conf, strings.ToUpper(appName)); err != nil {
 				logrus.Fatalf("ecp parse error: %s", err)
 			}
 
