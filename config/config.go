@@ -3,18 +3,11 @@ package config
 import (
 	"fmt"
 	"io/ioutil"
-	"reflect"
 
 	"github.com/sirupsen/logrus"
 	"github.com/wrfly/ecp"
 	"gopkg.in/yaml.v2"
 )
-
-func init() {
-	ecp.GetKey = func(parentName, structName string, tag reflect.StructTag) string {
-		return parentName + "_" + structName
-	}
-}
 
 type Config struct {
 	Listen  int  `default:"2020"`  // listen port
@@ -36,7 +29,7 @@ type Config struct {
 
 func (c *Config) Example() {
 	cc := &Config{}
-	if err := ecp.Default(cc); err != nil {
+	if err := ecp.Parse(cc); err != nil {
 		logrus.Fatalf("set default config value error: %s", err)
 	}
 	bs, _ := yaml.Marshal(cc)
