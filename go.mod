@@ -1,6 +1,6 @@
 module github.com/wrfly/et
 
-go 1.18
+go 1.19
 
 require (
 	github.com/boltdb/bolt v1.3.1
@@ -9,7 +9,7 @@ require (
 	github.com/sendgrid/sendgrid-go v3.12.0+incompatible
 	github.com/sirupsen/logrus v1.9.3
 	github.com/urfave/cli/v2 v2.25.7
-	github.com/wrfly/ecp v0.2.0
+	github.com/wrfly/ecp v0.3.1
 	gopkg.in/yaml.v2 v2.4.0
 )
 
